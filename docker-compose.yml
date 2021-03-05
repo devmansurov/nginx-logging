@@ -27,7 +27,7 @@ services:
     volumes:
       - clickhouse:/var/lib/clickhouse:rw
       - ./clickhouse/config/config.xml:/etc/clickhouse-server/config.xml:ro
-      - ./clickhouse/scheme/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./clickhouse/scheme:/docker-entrypoint-initdb.d:ro
   logstash:
     image: docker.elastic.co/logstash/logstash:7.11.1
     volumes:

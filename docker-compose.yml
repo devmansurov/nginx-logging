@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - "4040:4040"
+    volumes:
+      - ./php:/var/www/html
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs/:/var/log/nginx
+    depends_on:
+      - clickhouse
+      - php
+  php:
+    image: php:8.0.2-fpm-alpine3.13
+    container_name: php
+    volumes:
+      - ./php/config/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./php:/var/www/html
+  clickhouse:
+    container_name: clickhouse
+    image: yandex/clickhouse-server
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse/logs:/var/log/clickhouse-server
+      - ./clickhouse/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+      # - ./clickhouse/data:/var/lib/clickhouse:rw
+      # - ./clickhouse/config.xml:/etc/clickhouse-server/config.xml

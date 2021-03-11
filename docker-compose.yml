@@ -62,7 +62,7 @@ services:
     # container_name: grafana
     image: grafana/grafana
     ports:
-      - 3000:3000
+      - '3000:3000'
     volumes:
       - ./grafana:/var/lib/grafana:rw
       - ./grafana/grafana-clickhouse-datasource.yaml:/etc/grafana/provisioning/datasources/grafana-clickhouse-datasource.yaml
@@ -73,6 +73,17 @@ services:
       - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel,vertamedia-clickhouse-datasource
     depends_on:
       - clickhouse
+  syslog:
+    image: balabit/syslog-ng
+    container_name: syslog-ng
+    command: "--no-caps"
+    expose:
+      - '514'
+      - '601'
+      - '6514'
+    volumes:
+      - ./syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf
+      - ./syslog/logs:/var/log/syslog-ng
 volumes:
   clickhouse: {}
   zookeeper: {}

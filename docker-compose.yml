@@ -20,14 +20,15 @@ services:
       - ./app:/var/www/html
   clickhouse:
     container_name: clickhouse
-    image: yandex/clickhouse-server:20-alpine
+    image: yandex/clickhouse-server
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
-      - clickhouse:/var/lib/clickhouse:rw
-      - ./clickhouse/config/config.xml:/etc/clickhouse-server/config.xml:ro
-      - ./clickhouse/scheme:/docker-entrypoint-initdb.d:ro
+      - ./clickhouse:/var/lib/clickhouse:rw
+      - ./clickhouse/scheme/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+      # - ./clickhouse/config/config.xml:/etc/clickhouse-server/config.xml:ro
+      # - ./clickhouse/scheme:/docker-entrypoint-initdb.d:ro
   logstash:
     image: docker.elastic.co/logstash/logstash:7.11.1
     volumes:

@@ -1,3 +1,4 @@
 grafana/plugins/*
-clickhouse/data/*
-clickhouse/logs/*
+clickhouse/*
+!clickhouse/config
+!clickhouse/scheme/
